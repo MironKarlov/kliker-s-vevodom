@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кликер с монетами</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        h1 {
+            margin-top: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .coin-counter {
+            font-size: 3rem;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .coin {
+            font-size: 4rem;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: transform 0.1s;
+            user-select: none;
+        }
+        
+        .coin:active {
+            transform: scale(0.9);
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .stats {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .click-animation {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: bold;
+            color: gold;
+            pointer-events: none;
+            animation: floatUp 1s forwards;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Кликер с монетами</h1>
+        <div class="coin-counter" id="coinCounter">0 монет</div>
+        <div class="coin" id="coin">🪙</div>
+        <div class="buttons">
+            <button id="withdrawBtn">Вывести монеты</button>
+        </div>
+        <div class="stats">
+            <p>Всего кликов: <span id="totalClicks">0</span></p>
+            <p>Монет за клик: <span id="coinsPerClick">1</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Переменные игры
+        let coins = 0;
+        let totalClicks = 0;
+        let coinsPerClick = 1;
+        
+        // Элементы DOM
+        const coinCounter = document.getElementById('coinCounter');
+        const coin = document.getElementById('coin');
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const totalClicksElement = document.getElementById('totalClicks');
+        const coinsPerClickElement = document.getElementById('coinsPerClick');
+        
+        // Функция для обновления отображения монет
+        function updateCoinDisplay() {
+            coinCounter.textContent = `${coins} монет`;
+        }
+        
+        // Функция для обработки клика по монете
+        function handleCoinClick() {
+            coins += coinsPerClick;
+            totalClicks++;
+            updateCoinDisplay();
+            totalClicksElement.textContent = totalClicks;
+            
+            // Создание анимации клика
+            createClickAnimation();
+        }
+        
+        // Функция для создания анимации клика
+        function createClickAnimation() {
+            const animation = document.createElement('div');
+            animation.classList.add('click-animation');
+            animation.textContent = `+${coinsPerClick}`;
+            animation.style.left = `${event.clientX}px`;
+            animation.style.top = `${event.clientY}px`;
+            document.body.appendChild(animation);
+            
+            // Удаление анимации после завершения
+            setTimeout(() => {
+                animation.remove();
+            }, 1000);
+        }
+        
+        // Функция для обработки вывода монет
+        function handleWithdraw() {
+            // Замените ссылку на нужный вам сайт
+            window.location.href = "https://mironkarlov.github.io/kliker-s-vevodom";
+        }
+        
+        // Назначение обработчиков событий
+        coin.addEventListener('click', handleCoinClick);
+        withdrawBtn.addEventListener('click', handleWithdraw);
+        
+        // Инициализация отображения
+        updateCoinDisplay();
+    </script>
+</body>
+  </html>
