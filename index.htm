@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вывод денег</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .balance {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .balance h2 {
+            color: #27ae60;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .balance p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            margin: 20px 0;
+            width: 100%;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .form-container {
+            display: none;
+            text-align: left;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .card-input {
+            letter-spacing: 3px;
+            font-family: monospace;
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .info {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        
+        .info h3 {
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .info ul {
+            text-align: left;
+            margin-left: 20px;
+        }
+        
+        .info li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Вывод средств</h1>
+        
+        <div class="balance">
+            <h2>15 640 ₽</h2>
+            <p>Доступно для вывода</p>
+        </div>
+        
+        <button class="btn" id="withdrawBtn">Вывести деньги</button>
+        
+        <div class="form-container" id="withdrawForm">
+            <div class="form-group">
+                <label for="cardNumber">Номер банковской карты</label>
+                <input type="text" id="cardNumber" class="card-input" placeholder="0000 0000 0000 0000" maxlength="19">
+            </div>
+            
+            <div class="form-group">
+                <label for="amount">Сумма для вывода</label>
+                <input type="text" id="amount" placeholder="Введите сумму в рублях">
+            </div>
+            
+            <button class="btn" id="submitBtn">Отправить заявку</button>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <h3>Заявка успешно отправлена!</h3>
+            <p>Мы обработаем ваш запрос в течение 24 часов. Деньги поступят на указанную карту в течение 1-3 рабочих дней.</p>
+        </div>
+        
+        <div class="info">
+            <h3>Информация о выводе средств</h3>
+            <ul>
+                <li>Минимальная сумма для вывода: 500 ₽</li>
+                <li>Комиссия за вывод: 2% от суммы</li>
+                <li>Срок обработки заявки: до 24 часов</li>
+                <li>Поступление средств: 1-3 рабочих дня</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const withdrawBtn = document.getElementById('withdrawBtn');
+            const withdrawForm = document.getElementById('withdrawForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const cardNumberInput = document.getElementById('cardNumber');
+            const amountInput = document.getElementById('amount');
+            
+            // Обработчик для кнопки "Вывести деньги"
+            withdrawBtn.addEventListener('click', function() {
+                withdrawForm.style.display = 'block';
+                withdrawBtn.style.display = 'none';
+            });
+            
+            // Форматирование номера карты
+            cardNumberInput.addEventListener('input', function() {
+                let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                this.value = formattedValue;
+            });
+            
+            // Обработчик для кнопки отправки
+            submitBtn.addEventListener('click', function() {
+                const cardNumber = cardNumberInput.value.trim();
+                const amount = amountInput.value.trim();
+                
+                if (!cardNumber || cardNumber.length < 19) {
+                    alert('Пожалуйста, введите корректный номер карты');
+                    return;
+                }
+                
+                if (!amount || isNaN(amount) || parseFloat(amount) < 500) {
+                    alert('Пожалуйста, введите сумму не менее 500 рублей');
+                    return;
+                }
+                
+                // Здесь должен быть код для отправки данных на сервер
+                // Например, с использованием fetch или XMLHttpRequest
+                
+                // В реальном приложении здесь будет отправка данных на сервер
+                console.log('Запрос на вывод:', {
+                    cardNumber: cardNumber,
+                    amount: amount
+                });
+                
+                // Показываем сообщение об успехе
+                withdrawForm.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // В реальном приложении здесь можно отправить уведомление
+                alert(`Заявка на вывод ${amount} ₽ на карту ${cardNumber} отправлена! Вам придет уведомление.`);
+            });
+        });
+    </script>
+</body>
+  </html>
