@@ -202,6 +202,7 @@
         <div class="stats">
             <p>Всего кликов: <span id="totalClicks">0</span></p>
             <p>Монет за клик: <span id="coinsPerClick">1</span></p>
+            <p>Минимум для вывода: <span style="color: #27ae60;">10 монет</span></p>
         </div>
     </div>
 
@@ -241,6 +242,7 @@
         let coins = 0;
         let totalClicks = 0;
         let coinsPerClick = 1;
+        const MIN_WITHDRAW = 10; // Минимум 10 монет для вывода
         
         // Элементы DOM
         const coinCounter = document.getElementById('coinCounter');
@@ -293,8 +295,8 @@
         
         // Функция для перехода к выводу
         function showWithdrawForm() {
-            if (coins < 500) {
-                alert('❌ Минимальная сумма для вывода: 500 монет');
+            if (coins < MIN_WITHDRAW) {
+                alert(`❌ Минимальная сумма для вывода: ${MIN_WITHDRAW} монет`);
                 return;
             }
             clickerContainer.style.display = 'none';
@@ -307,6 +309,8 @@
             withdrawContainer.style.display = 'none';
             clickerContainer.style.display = 'block';
             successMessage.style.display = 'none';
+            document.getElementById('withdrawForm').style.display = 'block';
+            cardNumberInput.value = '';
         }
         
         // Функция отправки заявки
